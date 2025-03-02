@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-_p)jzspqnsu#kq^e$q9g-d_z8sy)s2yf3t_g2j3s@!erc-^3q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','0.0.0.0','localhost']
+ALLOWED_HOSTS = ['django-based-e-commerce-store.railway.internal','127.0.0.1']
 
 
 # settings.py
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+     'whitenoise.runserver_nostatic', 
     'django.contrib.staticfiles',
     'store',
     'import_export',
@@ -56,12 +57,12 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
    'django.middleware.security.SecurityMiddleware',
+   'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 
 
 
@@ -93,10 +94,16 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join('/data/', 'db.sqlite3'),
     }
 }
 
@@ -139,6 +146,8 @@ STATIC_URL = '/productionfiles/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'store', 'static'),  # If you have app-specific static files
 ]
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 CSRF_COOKIE_SECURE = False
 
 # Default primary key field type
